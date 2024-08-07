@@ -15,7 +15,7 @@ const createStudentIntoDB = async (file: any, payload: TStudent) => {
 
   userData.role = 'student';
   userData.email = payload.email;
-  userData.id = '12345';
+  userData.id = payload.id;
   userData.password = payload.password || 'student123';
   const session = await mongoose.startSession();
 
@@ -23,7 +23,7 @@ const createStudentIntoDB = async (file: any, payload: TStudent) => {
     session.startTransaction();
 
     if (file) {
-      const imageName = `${userData.id}${payload.name.firstName}`;
+      const imageName = `${payload.name.firstName}`;
       const path = file?.path;
       const { secure_url } = await sendImageToCloudinary(imageName, path);
       payload.profileImg = secure_url as string;

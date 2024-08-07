@@ -6,10 +6,10 @@ import { NextFunction, Request, Response } from 'express';
 
 import httpStatus from 'http-status';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { TUserRole } from '../modules/user/user.interface';
 import { catchAsync } from '../../utils/catchAsync';
 import { AppError } from '../error/AppError';
 import config from '../config';
+import { TUserRole } from '../modules/user/user.interface';
 import { User } from '../modules/user/user.model';
 
 

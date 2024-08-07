@@ -22,12 +22,6 @@ app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
 // application routes
 app.use('/api/v1', router);
 
-const test = (req: Request, res: Response) => {
-  const a = 10;
-  res.send(a);
-};
-
-app.get('/', test);
 
 app.use(globalErrorHandler);
 
