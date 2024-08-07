@@ -43,15 +43,6 @@ export type TAddress = {
   district: string;
   city: string;
 };
-// export type TPermanentAddress = {
-//   house: string;
-//   postOffice: string;
-//   postCode: number;
-//   union: string;
-//   policeStation: string;
-//   district: string;
-//   city: string;
-// };
 
 
 export type TClass = 5 | 6 | 7 | 8 | 9 | 10;

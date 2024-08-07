@@ -109,36 +109,7 @@ const addessSchema = new Schema<TAddress>({
     required: [true, 'Present city is required'],
   },
 });
-// const permanentAddressSchema = new Schema<TPermanentAddress>({
-//   house: {
-//     type: String,
-//     required: [true, 'Present house is required'],
-//   },
-//   postOffice: {
-//     type: String,
-//     required: [true, 'Present post office is required'],
-//   },
-//   postCode: {
-//     type: Number,
-//     required: [true, 'Present post code is required'],
-//   },
-//   union: {
-//     type: String,
-//     required: [true, 'Present union is required'],
-//   },
-//   policeStation: {
-//     type: String,
-//     required: [true, 'Present police station is required'],
-//   },
-//   district: {
-//     type: String,
-//     required: [true, 'Present district is required'],
-//   },
-//   city: {
-//     type: String,
-//     required: [true, 'Present city is required'],
-//   },
-// });
+
 
 const studentSchema = new Schema<TStudent>(
   {

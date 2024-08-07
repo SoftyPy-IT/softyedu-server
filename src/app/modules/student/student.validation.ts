@@ -38,15 +38,7 @@ const addressSchema = z.object({
   district: z.string().min(1, 'District is required'),
   city: z.string().min(1, 'City is required'),
 });
-// const permanentAddressSchema = z.object({
-//   house: z.string().min(1, 'House is required'),
-//   postOffice: z.string().min(1, 'Post office is required'),
-//   postCode: z.number().min(1, 'Post code is required'),
-//   union: z.string().min(1, 'Union is required'),
-//   policeStation: z.string().min(1, 'Police station is required'),
-//   district: z.string().min(1, 'District is required'),
-//   city: z.string().min(1, 'City is required'),
-// });
+
 const TMonthsEnum = z.enum([
   'January',
   'February',
