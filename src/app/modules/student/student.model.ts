@@ -2,9 +2,11 @@ import { model, Schema } from 'mongoose';
 import {
   TGuardian,
   TLocalGuardian,
-  TStudent,
   TUserName,
+  TStudent,
+  TAddress,
 } from './student.interface';
+import { TMonths } from './student.constant';
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -77,6 +79,67 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
   },
 });
 
+const addessSchema = new Schema<TAddress>({
+  house: {
+    type: String,
+    required: [true, 'Present house is required'],
+  },
+  postOffice: {
+    type: String,
+    required: [true, 'Present post office is required'],
+  },
+  postCode: {
+    type: Number,
+    required: [true, 'Present post code is required'],
+  },
+  union: {
+    type: String,
+    required: [true, 'Present union is required'],
+  },
+  policeStation: {
+    type: String,
+    required: [true, 'Present police station is required'],
+  },
+  district: {
+    type: String,
+    required: [true, 'Present district is required'],
+  },
+  city: {
+    type: String,
+    required: [true, 'Present city is required'],
+  },
+});
+// const permanentAddressSchema = new Schema<TPermanentAddress>({
+//   house: {
+//     type: String,
+//     required: [true, 'Present house is required'],
+//   },
+//   postOffice: {
+//     type: String,
+//     required: [true, 'Present post office is required'],
+//   },
+//   postCode: {
+//     type: Number,
+//     required: [true, 'Present post code is required'],
+//   },
+//   union: {
+//     type: String,
+//     required: [true, 'Present union is required'],
+//   },
+//   policeStation: {
+//     type: String,
+//     required: [true, 'Present police station is required'],
+//   },
+//   district: {
+//     type: String,
+//     required: [true, 'Present district is required'],
+//   },
+//   city: {
+//     type: String,
+//     required: [true, 'Present city is required'],
+//   },
+// });
+
 const studentSchema = new Schema<TStudent>(
   {
     id: {
@@ -84,12 +147,12 @@ const studentSchema = new Schema<TStudent>(
       required: [true, 'ID is required'],
       unique: true,
     },
-    user: {
-      type: Schema.Types.ObjectId,
-      required: [true, 'User id is required'],
-      unique: true,
-      ref: 'User',
-    },
+    // user: {
+    //   type: Types.ObjectId,
+    //   required: [true, 'User id is required'],
+    //   unique: true,
+    //   ref: 'User',
+    // },
     password: {
       type: String,
       required: [true, 'Password is required'],
@@ -112,7 +175,10 @@ const studentSchema = new Schema<TStudent>(
       required: [true, 'Email is required'],
       unique: true,
     },
-    contactNo: { type: String, required: [true, 'Contact number is required'] },
+    contactNo: {
+      type: String,
+      required: [true, 'Contact number is required'],
+    },
     emergencyContactNo: {
       type: String,
       required: [true, 'Emergency contact number is required'],
@@ -149,61 +215,13 @@ const studentSchema = new Schema<TStudent>(
       type: String,
       required: [true, 'Religion is required'],
     },
-    pressent_house: {
-      type: String,
-      required: [true, 'Present house information is required'],
+    presentAddress: {
+      type: addessSchema,
+      required: [true, 'Present address is required'],
     },
-    pressent_postOffice: {
-      type: String,
-      required: [true, 'Present post office information is required'],
-    },
-    pressent_postCode: {
-      type: Number,
-      required: [true, 'Present post code is required'],
-    },
-    pressent_union: {
-      type: String,
-      required: [true, 'Present union is required'],
-    },
-    pressent_policeStation: {
-      type: String,
-      required: [true, 'Present police station is required'],
-    },
-    pressent_district: {
-      type: String,
-      required: [true, 'Present district is required'],
-    },
-    pressent_city: {
-      type: String,
-      required: [true, 'Present city is required'],
-    },
-    permanent_house: {
-      type: String,
-      required: [true, 'Permanent house information is required'],
-    },
-    permanent_postOffice: {
-      type: String,
-      required: [true, 'Permanent post office information is required'],
-    },
-    permanent_postCode: {
-      type: Number,
-      required: [true, 'Permanent post code is required'],
-    },
-    permanent_union: {
-      type: String,
-      required: [true, 'Permanent union is required'],
-    },
-    permanent_policeStation: {
-      type: String,
-      required: [true, 'Permanent police station is required'],
-    },
-    permanent_district: {
-      type: String,
-      required: [true, 'Permanent district is required'],
-    },
-    permanent_city: {
-      type: String,
-      required: [true, 'Permanent city is required'],
+    permanentAddress: {
+      type: addessSchema,
+      required: [true, 'Permanent address is required'],
     },
     class: {
       type: Number,
@@ -231,20 +249,7 @@ const studentSchema = new Schema<TStudent>(
     },
     admissionMonth: {
       type: String,
-      enum: [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-      ],
+      enum: TMonths,
       required: [true, 'Admission month is required'],
     },
     version: {
@@ -261,7 +266,7 @@ const studentSchema = new Schema<TStudent>(
       type: String,
       required: [true, 'Academic year is required'],
     },
-    previous_school: {
+    previousSchool: {
       type: String,
       required: [true, 'Previous school is required'],
     },
@@ -278,7 +283,7 @@ const studentSchema = new Schema<TStudent>(
 );
 
 studentSchema.virtual('fullName').get(function () {
-  return `${this?.name?.firstName} ${this?.name?.lastName}`;
+  return `${this.name.firstName} ${this.name.lastName}`;
 });
 
 export const Student = model<TStudent>('Student', studentSchema);

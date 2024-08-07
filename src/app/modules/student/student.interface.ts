@@ -34,6 +34,25 @@ export type TLocalGuardian = {
   relation: string;
   address: string;
 };
+export type TAddress = {
+  house: string;
+  postOffice: string;
+  postCode: number;
+  union: string;
+  policeStation: string;
+  district: string;
+  city: string;
+};
+// export type TPermanentAddress = {
+//   house: string;
+//   postOffice: string;
+//   postCode: number;
+//   union: string;
+//   policeStation: string;
+//   district: string;
+//   city: string;
+// };
+
 
 export type TClass = 5 | 6 | 7 | 8 | 9 | 10;
 export type TGroup = 'Science' | 'Business Studies' | 'Humanities';
@@ -60,20 +79,8 @@ export type TStudent = {
   phone: number;
   nid: number;
   religion: string;
-  pressent_house: string;
-  pressent_postOffice: string;
-  pressent_postCode: number;
-  pressent_union: string;
-  pressent_policeStation: string;
-  pressent_district: string;
-  pressent_city: string;
-  permanent_house: string;
-  permanent_postOffice: string;
-  permanent_postCode: number;
-  permanent_union: string;
-  permanent_policeStation: string;
-  permanent_district: string;
-  permanent_city: string;
+  presentAddress: TAddress;
+  permanentAddress: TAddress;
   class: TClass;
   group: TGroup;
   branch: TBranch;
@@ -83,6 +90,6 @@ export type TStudent = {
   version: TVersion;
   shift: TShift;
   academicYear: string;
-  previous_school: string;
+  previousSchool: string;
   lastExamResult: string;
 };
