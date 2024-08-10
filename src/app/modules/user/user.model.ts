@@ -27,7 +27,7 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     role: {
       type: String,
-      enum: ['super_admin', 'student', 'faculty', 'admin'],
+      enum: ['super_admin', 'student', 'faculty', 'admin', 'teacher'],
     },
     status: {
       type: String,

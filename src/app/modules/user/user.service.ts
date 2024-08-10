@@ -8,6 +8,10 @@ import { User } from './user.model';
 import { AppError } from '../../error/AppError';
 import httpStatus from 'http-status';
 import { Student } from '../student/student.model';
+import { TTeacher } from '../teacher/teacher.interface';
+import config from '../../config';
+import { Teacher } from '../teacher/teacher.model';
+import { USER_ROLE } from './user.constant';
 
 const createStudentIntoDB = async (file: any, payload: TStudent) => {
   console.log(file);
@@ -53,7 +57,52 @@ const createStudentIntoDB = async (file: any, payload: TStudent) => {
     throw new Error(err);
   }
 };
+const createTecherIntoDB = async (file: any, payload: TTeacher) => {
+  console.log(file);
+  const userData: Partial<TUser> = {};
+
+  userData.role = USER_ROLE.teacher;
+  userData.email = payload.email;
+  userData.id = payload.id;
+  userData.password = config.default_pass as string;
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    if (file) {
+      const imageName = `${payload.name.first_name}`;
+      const path = file?.path;
+      const { secure_url } = await sendImageToCloudinary(imageName, path);
+      payload.profileImage = secure_url as string;
+    }
+
+    const newUser = await User.create([userData], { session });
+
+    if (!newUser.length) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user !');
+    }
+    payload.id = newUser[0].id;
+    payload.user = newUser[0]._id;
+
+    // create teacher
+    const newTeacher = await Teacher.create([payload], { session });
+
+    if (!newTeacher.length) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create teacher!');
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+    return newTeacher;
+  } catch (err: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(err);
+  }
+};
 
 export const UserServices = {
   createStudentIntoDB,
+  createTecherIntoDB,
 };

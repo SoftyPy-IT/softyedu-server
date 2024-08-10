@@ -5,6 +5,14 @@ export const studentSearchableFields = [
     'presentAddress',
   ];
   
+export const teacherSearchableFields = [
+    'email',
+    'name.first_name',
+    'name.last_name',
+    'presentAddress',
+    'permanent',
+  ];
+  
   export const TMonths = [
     'January',
     'February',

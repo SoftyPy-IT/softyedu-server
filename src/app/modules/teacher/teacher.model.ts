@@ -1,5 +1,10 @@
 import { model, Schema } from 'mongoose';
-import { TTeacher, TSocialLink, TAddress } from './teacher.interface';
+import {
+  TTeacher,
+  TSocialLink,
+  TAddress,
+  TUserName,
+} from './teacher.interface';
 
 const socialLinkSchema = new Schema<TSocialLink>({
   facebook: {
@@ -51,15 +56,34 @@ const addressSchema = new Schema<TAddress>({
   },
 });
 
+const userNameSchema = new Schema<TUserName>({
+  first_name: {
+    type: String,
+    required: [true, 'First Name is required'],
+    trim: true,
+  },
+  last_name: {
+    type: String,
+    trim: true,
+    required: [true, 'Last Name is required'],
+    maxlength: [20, 'Name cannot be more than 20 characters'],
+  },
+});
+
 const teacherSchema = new Schema<TTeacher>(
   {
-    first_name: {
+    id: {
       type: String,
-      required: [true, 'First name is required'],
     },
-    last_name: {
-      type: String,
-      required: [true, 'Last name is required'],
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'User id is required'],
+      unique: true,
+      ref: 'User',
+    },
+    name: {
+      type: userNameSchema,
+      required: [true, 'Name is required'],
     },
     email: {
       type: String,
@@ -142,16 +166,24 @@ const teacherSchema = new Schema<TTeacher>(
       type: String,
       required: [true, 'Teacher details are required'],
     },
+    profileImage: {
+      type: String,    
+      required: [true, 'Image is required'],
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     toJSON: {
       virtuals: true,
     },
-  }
+  },
 );
 
 teacherSchema.virtual('fullName').get(function () {
-  return `${this.first_name} ${this.last_name}`;
+  return `${this.name.first_name} ${this.name.last_name}`;
 });
 
 export const Teacher = model<TTeacher>('Teacher', teacherSchema);

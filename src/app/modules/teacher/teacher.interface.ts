@@ -1,5 +1,9 @@
+import { Types } from "mongoose";
 
-
+export type TUserName = {
+  first_name: string;
+  last_name: string;
+};
 
 export type TSocialLink = {
   facebook: string;
@@ -19,8 +23,9 @@ export type TAddress = {
 };
 
 export type TTeacher = {
-  first_name: string;
-  last_name: string;
+  id: string;
+  name: TUserName;
+  user: Types.ObjectId;
   email: string;
   phone: string;
   gender: string;
@@ -41,4 +46,6 @@ export type TTeacher = {
   joining_date: string;
   prev_institution_name: string;
   teacher_details: string;
+  profileImage: string;
+  isDeleted: boolean;
 };

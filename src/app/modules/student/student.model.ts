@@ -245,6 +245,7 @@ const studentSchema = new Schema<TStudent>(
       type: String,
       required: [true, 'Last exam result is required'],
     },
+  
   },
   {
     toJSON: {

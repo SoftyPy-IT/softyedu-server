@@ -84,4 +84,5 @@ export type TStudent = {
   academicYear: string;
   previousSchool: string;
   lastExamResult: string;
+  profile:string
 };
