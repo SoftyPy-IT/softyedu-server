@@ -118,12 +118,12 @@ const studentSchema = new Schema<TStudent>(
       required: [true, 'ID is required'],
       unique: true,
     },
-    // user: {
-    //   type: Types.ObjectId,
-    //   required: [true, 'User id is required'],
-    //   unique: true,
-    //   ref: 'User',
-    // },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'User id is required'],
+      unique: true,
+      ref: 'User',
+    },
     password: {
       type: String,
       required: [true, 'Password is required'],

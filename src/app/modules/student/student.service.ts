@@ -29,7 +29,7 @@ const getSingleStudentFromDB = async (id: string) => {
   return result;
 };
 const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
-  const { name, guardian, localGuardian, ...remainingStudentData } = payload;
+  const { name, guardian, localGuardian, presentAddress, permanentAddress, ...remainingStudentData } = payload;
 
   const modifiedUpdatedData: Record<string, unknown> = {
     ...remainingStudentData,
@@ -51,6 +51,16 @@ const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
   if (localGuardian && Object.keys(localGuardian).length) {
     for (const [key, value] of Object.entries(localGuardian)) {
       modifiedUpdatedData[`localGuardian.${key}`] = value;
+    }
+  }
+  if (presentAddress && Object.keys(presentAddress).length) {
+    for (const [key, value] of Object.entries(presentAddress)) {
+      modifiedUpdatedData[`presentAddress.${key}`] = value;
+    }
+  }
+  if (permanentAddress && Object.keys(permanentAddress).length) {
+    for (const [key, value] of Object.entries(permanentAddress)) {
+      modifiedUpdatedData[`permanentAddress.${key}`] = value;
     }
   }
 

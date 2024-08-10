@@ -91,7 +91,97 @@ const createStudentValidationSchema = z.object({
   }),
 });
 
-// Exporting for use
+
+const updateUserNameSchema = z.object({
+  firstName: z
+    .string()
+    .min(1, 'First Name is required')
+    .max(20, 'Name cannot be more than 20 characters').optional(),
+  lastName: z
+    .string()
+    .min(1, 'Last Name is required')
+    .max(20, 'Name cannot be more than 20 characters').optional(),
+});
+const updateGuardianSchema = z.object({
+  fatherName: z.string().min(1, 'Father Name is required').optional(),
+  fatherOccupation: z.string().min(1, 'Father occupation is required').optional(),
+  fatherContactNo: z.string().min(1, 'Father Contact No is required').optional(),
+  motherName: z.string().min(1, 'Mother Name is required').optional(),
+  motherOccupation: z.string().min(1, 'Mother occupation is required').optional(),
+  motherContactNo: z.string().min(1, 'Mother Contact No is required').optional(),
+});
+
+const updateLocalGuardianSchema = z.object({
+  name: z.string().min(1, 'Name is required').optional(),
+  occupation: z.string().min(1, 'Occupation is required').optional(),
+  contactNo: z.string().min(1, 'Contact number is required').optional(),
+  email: z.string().email('Invalid email format').min(1, 'Email is required').optional(),
+  relation: z.string().min(1, 'Relation is required').optional(),
+  address: z.string().min(1, 'Address is required').optional(),
+});
+
+const updateAddressSchema = z.object({
+  house: z.string().min(1, 'House is required').optional(),
+  postOffice: z.string().min(1, 'Post office is required').optional(),
+  postCode: z.number().min(1, 'Post code is required').optional(),
+  union: z.string().min(1, 'Union is required').optional(),
+  policeStation: z.string().min(1, 'Police station is required').optional(),
+  district: z.string().min(1, 'District is required').optional(),
+  city: z.string().min(1, 'City is required').optional(),
+});
+
+const updateTMonthsEnum = z.enum([
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]);
+
+const updateStudentValidationSchema = z.object({
+  body: z.object({
+    password: z.string().optional(),
+    id: z.string().optional(),
+    name: updateUserNameSchema.optional(),
+    gender: z.enum(['male', 'female', 'other']).optional(),
+    dateOfBirth: z.string().optional(),
+    email: z.string().email('Invalid email format').optional(),
+    contactNo: z.string().optional(),
+    emergencyContactNo: z.string().optional(),
+    bloodGroup: z
+      .enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])
+      .optional(),
+    guardian: updateGuardianSchema.optional(),
+    localGuardian: updateLocalGuardianSchema.optional(),
+    profileImg: z.string().optional(),
+    isDeleted: z.boolean().optional(),
+    phone: z.number().optional(),
+    nid: z.number().optional(),
+    religion: z.string().optional(),
+    presentAddress: updateAddressSchema.optional(),
+    permanentAddress: updateAddressSchema.optional(),
+    class: z.enum(['5', '6', '7', '8', '9', '10']).optional(),
+    group: z.enum(['Science', 'Business Studies', 'Humanities']).optional(),
+    branch: z.enum(['A', 'B', 'C']).optional(),
+    section: z.enum(['A', 'B', 'C']).optional(),
+    roll: z.number().optional(),
+    admissionMonth: updateTMonthsEnum.optional(),
+    version: z.enum(['English Version', 'Bangla Version']).optional(),
+    shift: z.enum(['Morning', 'Evening']).optional(),
+    academicYear: z.string().optional(),
+    previousSchool: z.string().optional(),
+    lastExamResult: z.string().optional(),
+  }),
+});
+
 export const studentValidations = {
   createStudentValidationSchema,
+  updateStudentValidationSchema,
 };

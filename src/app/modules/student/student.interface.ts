@@ -45,6 +45,7 @@ export type TAddress = {
 };
 
 
+
 export type TClass = 5 | 6 | 7 | 8 | 9 | 10;
 export type TGroup = 'Science' | 'Business Studies' | 'Humanities';
 export type TBranch = 'A' | 'B' | 'C';

@@ -66,12 +66,12 @@ const updateStudent = async (
 ) => {
   try {
     const {id} = req.params
-    const result = await StudentServices.deleteStudentFromDB(id);
+    const result = await StudentServices.updateStudentIntoDB(id, req.body);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Student deleted succesfully',
+      message: 'Student update succesfully',
       data: result,
     });
   } catch (err) {
