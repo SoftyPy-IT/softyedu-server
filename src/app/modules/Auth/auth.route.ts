@@ -14,12 +14,19 @@ router.post(
 );
 router.post(
   '/change-password',
-  auth(USER_ROLE.admin,USER_ROLE.student,USER_ROLE.teacher),
+  auth(USER_ROLE.admin, USER_ROLE.student, USER_ROLE.teacher),
   validateRequest(AuthValidation.changePasswordValidationSchema),
   AuthController.changePassword,
 );
-
-
-
+router.post(
+  '/forget-password',
+  validateRequest(AuthValidation.forgetPasswordValidationSchema),
+  AuthController.forgetPassword,
+);
+router.post(
+  '/reset-password',
+  validateRequest(AuthValidation.resetPasswordValidationSchema),
+  AuthController.resetPassword,
+);
 
 export const authRoutes = router;
