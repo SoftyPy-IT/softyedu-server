@@ -5,6 +5,7 @@ import { authRoutes } from '../modules/Auth/auth.route';
 import { studentRoutes } from '../modules/student/student.route';
 import { teacherRoutes } from '../modules/teacher/teacher.route';
 import { examScheduleRoutes } from '../modules/examschedule/examSchedule.route';
+import { admissionRoutes } from '../modules/admission/admission.route';
 
 const router = Router();
 
@@ -28,6 +29,10 @@ const moduleRoutes = [
   {
     path: '/exam-schedule',
     route: examScheduleRoutes,
+  },
+  {
+    path: '/admission',
+    route: admissionRoutes,
   },
 
 ];
