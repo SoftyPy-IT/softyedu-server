@@ -9,6 +9,7 @@ import { admissionRoutes } from '../modules/admission/admission.route';
 import { gmeetRoutes } from '../modules/gmeet/gmeet.route';
 import { resultRoutes } from '../modules/result/result.route';
 import { marksheetRoutes } from '../modules/marksheet/marksheet.route';
+import { grademarkRoutes } from '../modules/grademarks/grademarks.route';
 
 const router = Router();
 
@@ -48,6 +49,10 @@ const moduleRoutes = [
   {
     path: '/marksheet',
     route: marksheetRoutes,
+  },
+  {
+    path: '/grademarks',
+    route: grademarkRoutes,
   },
 ];
 
