@@ -7,6 +7,7 @@ import { teacherRoutes } from '../modules/teacher/teacher.route';
 import { examScheduleRoutes } from '../modules/examschedule/examSchedule.route';
 import { admissionRoutes } from '../modules/admission/admission.route';
 import { gmeetRoutes } from '../modules/gmeet/gmeet.route';
+import { resultRoutes } from '../modules/result/result.route';
 
 const router = Router();
 
@@ -38,6 +39,10 @@ const moduleRoutes = [
   {
     path: '/gmeet',
     route: gmeetRoutes,
+  },
+  {
+    path: '/result',
+    route: resultRoutes,
   },
 ];
 
