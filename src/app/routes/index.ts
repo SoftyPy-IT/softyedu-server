@@ -12,6 +12,7 @@ import { marksheetRoutes } from '../modules/marksheet/marksheet.route';
 import { grademarkRoutes } from '../modules/grademarks/grademarks.route';
 import { homeworkRoutes } from '../modules/homework/homework.route';
 import { assignmentRoutes } from '../modules/assignment/assignment.route';
+import { examRoutes } from '../modules/exam/exam.route';
 
 const router = Router();
 
@@ -63,6 +64,10 @@ const moduleRoutes = [
   {
     path: '/assignments',
     route: assignmentRoutes,
+  },
+  {
+    path: '/exam',
+    route: examRoutes,
   },
 ];
 
