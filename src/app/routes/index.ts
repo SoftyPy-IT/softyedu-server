@@ -10,6 +10,8 @@ import { gmeetRoutes } from '../modules/gmeet/gmeet.route';
 import { resultRoutes } from '../modules/result/result.route';
 import { marksheetRoutes } from '../modules/marksheet/marksheet.route';
 import { grademarkRoutes } from '../modules/grademarks/grademarks.route';
+import { homeworkRoutes } from '../modules/homework/homework.route';
+import { assignmentRoutes } from '../modules/assignment/assignment.route';
 
 const router = Router();
 
@@ -53,6 +55,14 @@ const moduleRoutes = [
   {
     path: '/grademarks',
     route: grademarkRoutes,
+  },
+  {
+    path: '/homeworks',
+    route: homeworkRoutes,
+  },
+  {
+    path: '/assignments',
+    route: assignmentRoutes,
   },
 ];
 
