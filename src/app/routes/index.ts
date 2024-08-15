@@ -14,6 +14,7 @@ import { homeworkRoutes } from '../modules/homework/homework.route';
 import { assignmentRoutes } from '../modules/assignment/assignment.route';
 import { examRoutes } from '../modules/exam/exam.route';
 import { examRoutinRoutes } from '../modules/examroutine/examroutin.route';
+import { holidayRoutes } from '../modules/holiday/holiday.route';
 
 const router = Router();
 
@@ -73,6 +74,10 @@ const moduleRoutes = [
   {
     path: '/examroutin',
     route: examRoutinRoutes,
+  },
+  {
+    path: '/holiday',
+    route: holidayRoutes,
   },
 ];
 
