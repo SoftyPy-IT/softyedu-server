@@ -18,6 +18,7 @@ import { holidayRoutes } from '../modules/holiday/holiday.route';
 import { SalaryRoutes } from '../modules/salary/salary.route';
 import { IncomeRoutes } from '../modules/income/income.route';
 import { ExpenseRoutes } from '../modules/expense/expense.route';
+import { libraryRoutes } from '../modules/library/library.route';
 
 const router = Router();
 
@@ -93,6 +94,10 @@ const moduleRoutes = [
   {
     path: '/expense',
     route: ExpenseRoutes,
+  },
+  {
+    path: '/library',
+    route: libraryRoutes
   },
 ];
 
