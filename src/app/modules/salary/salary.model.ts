@@ -43,7 +43,7 @@ const SalarySchema = new Schema<TSalary>({
   },
   status: {
     type: [String],
-    enum: ['complet', 'pending', 'on-hold', 'cancell'], // List all possible statuses
+    enum: ['complet', 'pending', 'on-hold', 'cancell'], 
     required: [true, 'Status is required'],
   },
 });
