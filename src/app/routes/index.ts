@@ -17,6 +17,7 @@ import { examRoutinRoutes } from '../modules/examroutine/examroutin.route';
 import { holidayRoutes } from '../modules/holiday/holiday.route';
 import { SalaryRoutes } from '../modules/salary/salary.route';
 import { IncomeRoutes } from '../modules/income/income.route';
+import { ExpenseRoutes } from '../modules/expense/expense.route';
 
 const router = Router();
 
@@ -88,6 +89,10 @@ const moduleRoutes = [
   {
     path: '/income',
     route: IncomeRoutes,
+  },
+  {
+    path: '/expense',
+    route: ExpenseRoutes,
   },
 ];
 

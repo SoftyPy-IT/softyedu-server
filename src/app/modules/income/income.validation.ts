@@ -36,7 +36,8 @@ const updateIncomeValidationSchema = z.object({
       .refine((val) => !isNaN(Date.parse(val)), {
         message: 'Invalid date format',
       })
-      .transform((val) => new Date(val)).optional(),
+      .transform((val) => new Date(val))
+      .optional(),
     amount: z.number({ required_error: 'Amount is required' }).optional(),
     image: z
       .string()
