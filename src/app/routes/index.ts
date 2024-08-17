@@ -15,6 +15,7 @@ import { assignmentRoutes } from '../modules/assignment/assignment.route';
 import { examRoutes } from '../modules/exam/exam.route';
 import { examRoutinRoutes } from '../modules/examroutine/examroutin.route';
 import { holidayRoutes } from '../modules/holiday/holiday.route';
+import { SalaryRoutes } from '../modules/salary/salary.route';
 
 const router = Router();
 
@@ -78,6 +79,10 @@ const moduleRoutes = [
   {
     path: '/holiday',
     route: holidayRoutes,
+  },
+  {
+    path: '/salary',
+    route: SalaryRoutes,
   },
 ];
 

@@ -2,7 +2,7 @@
 import { TMonths } from "../student/student.interface";
 
 export type TStatus = 'complete' | 'pending' | 'on-hold' | 'cancell'
-export interface ISalary {
+export interface TSalary {
   id: string;
   name: string;
   type: string; 
@@ -10,6 +10,7 @@ export interface ISalary {
   bonus: string;
   total: string;
   date: Date | null; 
-  month: TMonths[]; 
-  status: TStatus[]; 
+  month: TMonths; 
+  status: TStatus[];
+  isDeleted:boolean
 }

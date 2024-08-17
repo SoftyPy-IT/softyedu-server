@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Schema, model } from 'mongoose';
-import { ISalary } from './salary.interface';
+import { TSalary } from './salary.interface';
 import { TMonths } from '../student/student.constant';
 
-const SalarySchema = new Schema<ISalary>({
+const SalarySchema = new Schema<TSalary>({
   id: {
     type: String,
     required: [true, 'ID is required'],
@@ -12,7 +12,7 @@ const SalarySchema = new Schema<ISalary>({
     type: String,
     required: [true, 'Name is required'],
   },
-  type: {
+  type: { 
     type: String,
     required: [true, 'Employee type is required'],
   },
@@ -32,11 +32,15 @@ const SalarySchema = new Schema<ISalary>({
     type: Date,
     required: [true, 'Date is required'],
   },
-//   month: {
-//     type: String,
-//     enum: TMonths,
-//     required: [true, 'Month is required'],
-//   },
+  month: {
+    type: String,
+    enum: TMonths,
+    required: [true, 'Month is required'],
+  },
+  isDeleted: {
+    type: Boolean,
+   default:false
+  },
   status: {
     type: [String],
     enum: ['complet', 'pending', 'on-hold', 'cancell'], // List all possible statuses
@@ -44,4 +48,4 @@ const SalarySchema = new Schema<ISalary>({
   },
 });
 
-export const Salary = model<ISalary>('Salary', SalarySchema);
+export const Salary = model<TSalary>('Salary', SalarySchema);
