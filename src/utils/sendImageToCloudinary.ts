@@ -3,7 +3,6 @@ import fs from 'fs';
 import multer from 'multer';
 import config from '../app/config';
 
-
 cloudinary.config({
   cloud_name: config.cloudinary_name,
   api_key: config.cloudinary_api_key,

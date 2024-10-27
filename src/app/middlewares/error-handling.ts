@@ -1,9 +1,7 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
-import { ZodError, ZodIssue } from 'zod';
+import { ErrorRequestHandler } from 'express';
+import { ZodError } from 'zod';
+import config from '../config';
+
 import { TErrorSources } from '../interface/error';
 import handleZodError from '../error/handleZodError';
 import handleValidationError from '../error/handleValidationError';
@@ -11,10 +9,10 @@ import handleCastError from '../error/handleCastError';
 import handleDuplicateError from '../error/handleDuplicateError';
 import { AppError } from '../error/AppError';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = 500;
-  let message = 'Something went wrong!';
-
+  let message: string = 'Something went wrong!';
   let errorSources: TErrorSources = [
     {
       path: '',
@@ -39,12 +37,12 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     errorSources = simplifiedError?.errorSources;
   } else if (err?.code === 11000) {
     const simplifiedError = handleDuplicateError(err);
-    statusCode = simplifiedError.statusCode;
-    message = simplifiedError.message;
-    errorSources = simplifiedError.errorSources;
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
   } else if (err instanceof AppError) {
-    statusCode = err.statusCode;
-    message = err.message;
+    statusCode = err?.statusCode;
+    message = err?.message;
     errorSources = [
       {
         path: '',
@@ -52,7 +50,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
       },
     ];
   } else if (err instanceof Error) {
-    message = err.message;
+    message = err?.message;
     errorSources = [
       {
         path: '',
@@ -65,16 +63,8 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     success: false,
     message,
     errorSources,
-    // amrError: err,
+    stack: config.NODE_ENV === 'development' ? err?.stack : null,
   });
 };
 
 export default globalErrorHandler;
-
-//patter
-// success
-// errorSources: {
-//   path: '',
-//   message: '',
-// }
-// stack
