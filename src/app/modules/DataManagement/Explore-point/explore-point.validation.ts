@@ -15,6 +15,8 @@ const explorePointValidationSchema = z.object({
         },
       ),
     ),
+    folder_name: z
+      .string({ required_error: 'Folder name is required' })
   }),
 });
 const updateExplorePointValidationSchema = z.object({
@@ -36,6 +38,8 @@ const updateExplorePointValidationSchema = z.object({
         ),
       )
       .optional(),
+    folder_name: z
+      .string({ required_error: 'Folder name is required' }).optional()
   }),
 });
 

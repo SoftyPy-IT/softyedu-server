@@ -6,6 +6,7 @@ import { SearchableFields } from './events.const';
 
 import { TEvents } from './events.interface';
 import Events from './events.model';
+import { addImageToFolder } from '../../../../middlewares/image-upload-folder';
 
 const createEventsIntoDB = async (payload: TEvents) => {
   const existingEvent = await Events.findOne({
@@ -20,6 +21,9 @@ const createEventsIntoDB = async (payload: TEvents) => {
     );
   }
   const event = await Events.create(payload);
+
+  await addImageToFolder(payload.folder_name, payload.image);
+
   return event;
 };
 
@@ -49,7 +53,7 @@ const updateEventsIntoDB = async (id: string, payload: TEvents) => {
   if (!updatedEvents) {
     throw new AppError(StatusCodes.NOT_FOUND, 'Events not found.');
   }
-
+  await addImageToFolder(payload.folder_name, payload.image);
   return updatedEvents;
 };
 

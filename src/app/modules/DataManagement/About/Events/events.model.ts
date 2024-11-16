@@ -15,9 +15,9 @@ const EventsSchema: Schema<TEvents> = new Schema<TEvents>(
       type: String,
       required: [true, 'Description is required'],
     },
-    file: {
+    image: {
       type: String,
-      required: [true, 'File is required'],
+      required: [true, 'Image is required'],
     },
   },
   {

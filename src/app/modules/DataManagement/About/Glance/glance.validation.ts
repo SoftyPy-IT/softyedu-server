@@ -11,6 +11,8 @@ const glanceValidationSchema = z.object({
           'Invalid image format. Only .jpg, .jpeg, .png, .gif, .bmp, .svg, .webp are allowed',
       },
     ),
+    folder_name: z
+      .string({ required_error: 'Folder name is required' }),
 
     title: z
       .string({ required_error: 'Title is required' })
@@ -31,6 +33,8 @@ const updateGlanceValidationSchema = z.object({
         },
       )
       .optional(),
+      folder_name: z
+      .string({ required_error: 'Folder name is required' }).optional(),
     title: z.string().optional(),
   }),
 });

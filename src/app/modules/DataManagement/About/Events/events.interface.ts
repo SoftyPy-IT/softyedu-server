@@ -2,5 +2,6 @@ export type TEvents = {
   title: string;
   date: string;
   description: string;
-  file: string;
+  image: string;
+  folder_name: string
 };

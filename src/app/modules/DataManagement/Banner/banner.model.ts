@@ -9,6 +9,7 @@ const BannerSchema: Schema<TBanner> = new Schema<TBanner>(
     },
     title: { type: String, required: [true, 'Title is required.'] },
     description: { type: String, required: [true, 'Description is required.'] },
+
   },
   {
     timestamps: true,

@@ -5,9 +5,15 @@ import sanitizePayload from '../../../middlewares/updateData';
 import QueryBuilder from '../../../builder/QueryBuilder';
 import { TExplorePoint } from './explore-point.interface';
 import { ExplorePoint } from './explore-point.model';
+import { addImageToFolder } from '../../../middlewares/image-upload-folder';
 
 const createExplorePointIntoDB = async (payload: TExplorePoint) => {
   const result = await ExplorePoint.create(payload);
+
+  for (const image of payload.image) {
+    await addImageToFolder(payload.folder_name, image);
+  }
+
   return result;
 };
 
@@ -39,6 +45,9 @@ const updateExplorePointInDB = async (id: string, payload: TExplorePoint) => {
 
   if (!updatedExplorePoint) {
     throw new AppError(StatusCodes.NOT_FOUND, 'Explore point not found.');
+  }
+  for (const image of payload.image) {
+    await addImageToFolder(payload.folder_name, image);
   }
 
   return updatedExplorePoint;

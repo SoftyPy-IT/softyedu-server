@@ -5,9 +5,11 @@ import QueryBuilder from '../../../../builder/QueryBuilder';
 import { SearchableFields } from './achievement.const';
 import { TAchievement } from './achievement.interface';
 import Achievement from './achievement.model';
+import { addImageToFolder } from '../../../../middlewares/image-upload-folder';
 
 const createAchievementIntoDB = async (payload: TAchievement) => {
   const achievement = await Achievement.create(payload);
+  await addImageToFolder(payload.folder_name, payload.image);
   return achievement;
 };
 const getAllAchievementFromDB = async (query: Record<string, unknown>) => {
@@ -40,6 +42,7 @@ const updateAchievementInDB = async (id: string, payload: TAchievement) => {
   if (!updatedAchievement) {
     throw new AppError(StatusCodes.NOT_FOUND, 'Achievement not found.');
   }
+  await addImageToFolder(payload.folder_name, payload.image);
 
   return updatedAchievement;
 };

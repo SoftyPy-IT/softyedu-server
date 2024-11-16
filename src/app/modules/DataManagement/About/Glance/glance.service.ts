@@ -6,9 +6,11 @@ import QueryBuilder from '../../../../builder/QueryBuilder';
 import { TGlance } from './glance.interface';
 import Glance from './glance.model';
 import { GlanceSearchableFields } from './glance.const';
+import { addImageToFolder } from '../../../../middlewares/image-upload-folder';
 
 const createGlanceIntoDB = async (payload: TGlance) => {
   const glance = await Glance.create(payload);
+  await addImageToFolder(payload.folder_name, payload.image);
   return glance;
 };
 const getAllGlanceFromDB = async (query: Record<string, unknown>) => {
@@ -37,7 +39,7 @@ const updateGlanceInDB = async (id: string, payload: TGlance) => {
   if (!updatedGlance) {
     throw new AppError(StatusCodes.NOT_FOUND, 'Glance not found.');
   }
-
+  await addImageToFolder(payload.folder_name, payload.image);
   return updatedGlance;
 };
 
