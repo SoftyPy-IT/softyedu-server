@@ -4,6 +4,7 @@ export type TWhyStudy = {
       image: string;
       title: string;
       description: string;
+      folder_name: string
     },
   ];
   benefits: [
@@ -11,6 +12,7 @@ export type TWhyStudy = {
       title: string;
       description: string;
       image: string;
+      folder_name: string
     },
   ];
 };

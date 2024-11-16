@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 import { StatusCodes } from 'http-status-codes';
-import { AppError } from '../../../error/AppError';
 import { TNavbar } from './navbar.interface';
 import { Navbar } from './navbar.model';
-import sanitizePayload from '../../../middlewares/updateData';
+import { AppError } from '../../../error/AppError';
+
+
 
 const createNavbarIntoDB = async (payload: TNavbar) => {
   const session = await mongoose.startSession();
@@ -47,59 +48,70 @@ const getAllNavbarFromDB = async () => {
   return navbar;
 };
 
-const deleteSubCategoryFromDB = async (id: string, subCategoryName: string) => {
+
+
+const deleteSubCategoryFromDB = async (id: string, subCategoryIndex: number) => {
+  // Find the Navbar document by ID
   const existingCategory = await Navbar.findById(id);
   if (!existingCategory) {
     throw new AppError(StatusCodes.NOT_FOUND, 'Category not found.');
   }
-  const subCategoryIndex =
-    existingCategory.sub_category.indexOf(subCategoryName);
-  if (subCategoryIndex === -1) {
-    throw new AppError(StatusCodes.NOT_FOUND, 'Sub-category not found.');
+
+  // Check if the provided index is within bounds
+  if (subCategoryIndex < 0 || subCategoryIndex >= existingCategory.sub_category.length) {
+    throw new AppError(StatusCodes.BAD_REQUEST, 'Invalid sub-category index.');
   }
 
-  // Remove the sub-category from the array
+  // Remove the sub-category at the specified index
   existingCategory.sub_category.splice(subCategoryIndex, 1);
 
+  // Save the updated document
   const updatedNavBar = await existingCategory.save();
   return updatedNavBar;
 };
+const deleteCategoryFromDB = async (id: string) => {
+  // Find the Navbar document by ID
+  const category = await Navbar.findByIdAndDelete(id);
+  if (!category) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Category not found.');
+  }
+  return category;
+};
 
-const updateNavbarInDB = async (id: string, payload: TNavbar) => {
+
+
+const updateNavbarInDB = async (id: string, payload: Partial<TNavbar>) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    if (payload.category) {
-      const existingCategory = await Navbar.findOne({
-        category: payload.category,
-      }).session(session);
-
-      if (existingCategory && existingCategory._id.toString() !== id) {
-        throw new AppError(
-          StatusCodes.CONFLICT,
-          'Category already exists. Please use a different category name.',
-        );
-      }
+    // Ensure sub_category is an array
+    if (payload.sub_category && !Array.isArray(payload.sub_category)) {
+      payload.sub_category = [payload.sub_category];
     }
 
-    if (payload.sub_category) {
-      if (!Array.isArray(payload.sub_category)) {
-        payload.sub_category = [payload.sub_category];
-      }
+    // Find the existing Navbar document by ID
+    const existingCategory = await Navbar.findById(id).session(session);
+    if (!existingCategory) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'Category not found.');
     }
-    const sanitizedData = sanitizePayload(payload);
 
-    const updatedNavbar = await Navbar.findByIdAndUpdate(id, sanitizedData, {
-      new: true,
-      runValidators: true,
-      session,
-      omitUndefined: true,
-    });
+    // Check if a category with the same name exists, but is not the current one
+    const conflictCategory = await Navbar.findOne({
+      category: payload.category,
+      _id: { $ne: id },
+    }).session(session);
 
-    if (!updatedNavbar) {
-      throw new AppError(StatusCodes.NOT_FOUND, 'Navbar item not found.');
+    if (conflictCategory) {
+      throw new AppError(
+        StatusCodes.CONFLICT,
+        'Category already exists. Please use a different category name.'
+      );
     }
+
+    // Update the existing category with the new payload
+    Object.assign(existingCategory, payload);
+    const updatedNavbar = await existingCategory.save({ session });
 
     await session.commitTransaction();
     return updatedNavbar;
@@ -111,9 +123,11 @@ const updateNavbarInDB = async (id: string, payload: TNavbar) => {
   }
 };
 
+
 export const NavbarServices = {
   createNavbarIntoDB,
   getAllNavbarFromDB,
   deleteSubCategoryFromDB,
   updateNavbarInDB,
+  deleteCategoryFromDB
 };

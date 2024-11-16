@@ -1,7 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
+import { NavbarServices } from './navbar.service';
 import { catchAsync } from '../../../../utils/catchAsync';
 import sendResponse from '../../../../utils/sendResponse';
-import { NavbarServices } from './navbar.service';
+
 
 const createNavbar = catchAsync(async (req, res) => {
   const navbar = await NavbarServices.createNavbarIntoDB(req.body);
@@ -21,6 +22,8 @@ const getNavbar = catchAsync(async (req, res) => {
     data: navbar,
   });
 });
+
+
 const updateNavbar = catchAsync(async (req, res) => {
   const { id } = req.params;
 
@@ -33,9 +36,9 @@ const updateNavbar = catchAsync(async (req, res) => {
   });
 });
 const deleteSubCategory = catchAsync(async (req, res) => {
-  const { id, subCategory } = req.params;
+  const { id, index } = req.params;
 
-  const navbar = await NavbarServices.deleteSubCategoryFromDB(id, subCategory);
+  const navbar = await NavbarServices.deleteSubCategoryFromDB(id, Number(index));
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
@@ -43,10 +46,23 @@ const deleteSubCategory = catchAsync(async (req, res) => {
     data: navbar,
   });
 });
+const deleteCategory = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const navbar = await NavbarServices.deleteCategoryFromDB(id);
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Category deleted successful!',
+    data: navbar,
+  });
+});
 
 export const navbarController = {
   createNavbar,
   getNavbar,
-  deleteSubCategory,
   updateNavbar,
+  deleteSubCategory,
+  deleteCategory
+  
 };

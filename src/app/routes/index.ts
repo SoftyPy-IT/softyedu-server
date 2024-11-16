@@ -9,6 +9,8 @@ import { WhyStudyRoutes } from '../modules/DataManagement/About/WhyStudyHere/why
 import { EventsRoutes } from '../modules/DataManagement/About/Events/events.route';
 import { SchoolFeatureRoutes } from '../modules/DataManagement/School-Features/school-features.route';
 import { ExplorePointRoutes } from '../modules/DataManagement/Explore-point/explore-point.route';
+import { FolderRoutes } from '../modules/DataManagement/Stock-gallery/Create-folder/folder.route';
+import { FacilitiesRoutes } from '../modules/DataManagement/Facilities/facilities.route';
 
 const router = Router();
 
@@ -52,6 +54,14 @@ const moduleRoutes = [
   {
     path: '/explore-point',
     route: ExplorePointRoutes,
+  },
+  {
+    path: '/folder',
+    route: FolderRoutes,
+  },
+  {
+    path: '/facilities',
+    route: FacilitiesRoutes,
   },
 ];
 

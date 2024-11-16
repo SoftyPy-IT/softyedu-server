@@ -7,9 +7,23 @@ import { SearchableFields } from './why.study.here.const';
 import { TWhyStudy } from './why.study.here.interface';
 import WhyStudy from './why.study.here.model';
 import { Document } from 'mongoose';
+import { addImageToFolder } from '../../../../middlewares/image-upload-folder';
 
 const createWhyStudyIntoDB = async (payload: TWhyStudy) => {
   const result = await WhyStudy.create(payload);
+
+  if (payload.mission) {
+    for (const missionItem of payload.mission) {
+      await addImageToFolder(missionItem.folder_name, missionItem.image);
+    }
+  }
+
+  // Process benefits array
+  if (payload.benefits) {
+    for (const benefitsItem of payload.benefits) {
+      await addImageToFolder(benefitsItem.folder_name, benefitsItem.image);
+    }
+  }
   return result;
 };
 
@@ -69,7 +83,18 @@ const updateWhyStudyInDB = async (id: string, payload: TWhyStudy) => {
   if (!updatedWhyStudy) {
     throw new AppError(StatusCodes.NOT_FOUND, 'WhyStudy not found.');
   }
+  if (payload.mission) {
+    for (const missionItem of payload.mission) {
+      await addImageToFolder(missionItem.folder_name, missionItem.image);
+    }
+  }
 
+  // Process benefits array
+  if (payload.benefits) {
+    for (const benefitsItem of payload.benefits) {
+      await addImageToFolder(benefitsItem.folder_name, benefitsItem.image);
+    }
+  }
   return updatedWhyStudy;
 };
 

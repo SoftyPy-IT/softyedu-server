@@ -22,6 +22,8 @@ const whyStudyValidationSchema = z.object({
                   'Invalid image format. Only .jpg, .jpeg, .png, .gif, .bmp, .svg, .webp are allowed',
               },
             ),
+          folder_name: z
+            .string({ required_error: 'Folder name is required' })
         }),
       )
       .min(1, { message: 'At least one short mission entry is required' })
@@ -47,6 +49,8 @@ const whyStudyValidationSchema = z.object({
                   'Invalid image format. Only .jpg, .jpeg, .png, .gif, .bmp, .svg, .webp are allowed',
               },
             ),
+          folder_name: z
+            .string({ required_error: 'Folder name is required' })
         }),
       )
       .min(1, { message: 'At least one short benefits entry is required' })
@@ -76,6 +80,8 @@ const updateWhyStudyValidationSchema = z.object({
                   'Invalid image format. Only .jpg, .jpeg, .png, .gif, .bmp, .svg, .webp are allowed',
               },
             ),
+          folder_name: z
+            .string({ required_error: 'Folder name is required' }).optional()
         }),
       )
       .min(1, { message: 'At least one short mission entry is required' })
@@ -100,6 +106,8 @@ const updateWhyStudyValidationSchema = z.object({
                   'Invalid image format. Only .jpg, .jpeg, .png, .gif, .bmp, .svg, .webp are allowed',
               },
             ),
+          folder_name: z
+            .string({ required_error: 'Folder name is required' }).optional()
         }),
       )
       .min(1, { message: 'At least one short benefits entry is required' })

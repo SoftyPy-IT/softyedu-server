@@ -24,13 +24,15 @@ const eventsValidationSchema = z.object({
       .string({ required_error: 'Description is required' })
       .min(1, { message: 'Description must be at least 1 character long' }),
 
-    file: z
+    image: z
       .string({ required_error: 'File is required' })
       .min(1, { message: 'File path cannot be empty' })
       .regex(allowedExtensions, {
         message:
           'File must be a valid type (jpg, jpeg, png, pdf, doc, docx, xls, xlsx)',
       }),
+      folder_name: z
+      .string({ required_error: 'Folder name is required' })
   }),
 });
 
@@ -57,7 +59,7 @@ const updateEventsValidationSchema = z.object({
       .min(1, { message: 'Description must be at least 1 character long' })
       .optional(),
 
-    file: z
+    image: z
       .string({ required_error: 'File is required' })
       .min(1, { message: 'File path cannot be empty' })
       .regex(allowedExtensions, {
@@ -65,6 +67,8 @@ const updateEventsValidationSchema = z.object({
           'File must be a valid type (jpg, jpeg, png, pdf, doc, docx, xls, xlsx)',
       })
       .optional(),
+      folder_name: z
+      .string({ required_error: 'Folder name is required' }).optional()
   }),
 });
 

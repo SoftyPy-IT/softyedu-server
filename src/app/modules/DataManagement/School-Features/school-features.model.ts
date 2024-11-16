@@ -1,25 +1,42 @@
 import mongoose, { Model, Schema } from 'mongoose';
-import { TSchoolFeatures } from './school-features.interface';
+import { TSchoolFeatures, TFeatures } from './school-features.interface';
 
-const SchoolFeaturesSchema: Schema<TSchoolFeatures> =
-  new Schema<TSchoolFeatures>(
-    {
-      title: { type: String, required: [true, 'Title is required.'] },
-      description: {
-        type: String,
-        required: [true, 'Description is required.'],
-      },
-      sub_title: { type: String, required: [true, 'Sub title is required.'] },
-      sub_description: {
-        type: String,
-        required: [true, 'Sub title description is required.'],
-      },
-      image: { type: String, required: [true, 'Image is required.'] },
-    },
-    {
-      timestamps: true,
-    },
-  );
+// Define the TFeatures schema
+const FeaturesSchema: Schema<TFeatures> = new Schema<TFeatures>(
+  {
+    title: { type: String, required: [true, 'Feature title is required.'] },
+    description: { type: String, required: [true, 'Feature description is required.'] },
+    
+    image: { type: String, required: [true, 'Feature image is required.'] },
+  },
+  { _id: false } // _id is not required for this nested schema
+);
 
-export const SchoolFeatures: Model<TSchoolFeatures> =
-  mongoose.model<TSchoolFeatures>('SchoolFeatures', SchoolFeaturesSchema);
+// Define the main SchoolFeatures schema
+const SchoolFeaturesSchema: Schema<TSchoolFeatures> = new Schema<TSchoolFeatures>(
+  {
+    title: { type: String, required: [true, 'Title is required.'] },
+    description: { type: String, required: [true, 'Description is required.'] },
+    
+    features: {
+      type: [FeaturesSchema], // Array of TFeatures
+      required: [true, 'Features are required.'],
+      validate: {
+        validator: function (value: TFeatures[]) {
+          // Ensure features array is not empty
+          return value && value.length > 0;
+        },
+        message: 'At least one feature must be provided.',
+      },
+    },
+  },
+  {
+    timestamps: true, // Adds createdAt and updatedAt fields automatically
+  }
+);
+
+// Create and export the model
+export const SchoolFeatures: Model<TSchoolFeatures> = mongoose.model<TSchoolFeatures>(
+  'SchoolFeatures',
+  SchoolFeaturesSchema
+);

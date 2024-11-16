@@ -6,17 +6,20 @@ import QueryBuilder from '../../../builder/QueryBuilder';
 import { TSchoolFeatures } from './school-features.interface';
 import { SchoolFeatures } from './school-features.model';
 import { SchoolSearchableFields } from './school-featues.const';
+import { addImageToFolder } from '../../../middlewares/image-upload-folder';
 
 const createSchoolFeatureIntoDB = async (payload: TSchoolFeatures) => {
-  const existingSchoolFeature = await SchoolFeatures.findOne({
-    $and: [{ title: payload.title }, { sub_title: payload.sub_title }],
-  });
+  const existingSchoolFeature = await SchoolFeatures.findOne({ title: payload.title });
 
   if (existingSchoolFeature) {
     throw new AppError(
       StatusCodes.CONFLICT,
-      'A School feature with the same title and sub title already exists.',
+      'A School feature with the same title already exists.',
     );
+  }
+
+  for (const feature of payload.features) {
+    await addImageToFolder(feature.folder_name, feature.image);
   }
   const result = await SchoolFeatures.create(payload);
   return result;
@@ -42,17 +45,19 @@ const updateSchoolFeatureInDB = async (
   payload: TSchoolFeatures,
 ) => {
   const existingSchoolFeature = await SchoolFeatures.findOne({
-    $and: [{ title: payload.title }, { sub_title: payload.sub_title }],
+    title: payload.title,
     _id: { $ne: id },
   });
 
   if (existingSchoolFeature) {
     throw new AppError(
       StatusCodes.CONFLICT,
-      'A School feature with the same title and sub title already exists.',
+      'A School feature with the same title already exists.',
     );
   }
-
+  for (const feature of payload.features) {
+    await addImageToFolder(feature.folder_name, feature.image);
+  }
   const sanitizeData = sanitizePayload(payload);
 
   const updatedSchoolFeature = await SchoolFeatures.findByIdAndUpdate(
@@ -71,15 +76,40 @@ const updateSchoolFeatureInDB = async (
   return updatedSchoolFeature;
 };
 
-const deleteSchoolFeatureFromDB = async (id: string) => {
-  const deletedSchoolFeature = await SchoolFeatures.findByIdAndDelete(id);
+const deleteSchoolFeatureFromDB = async (id: string, featureIndex?: number) => {
+  // Find the SchoolFeatures document by ID
+  const schoolFeature = await SchoolFeatures.findById(id);
 
-  if (!deletedSchoolFeature) {
+  if (!schoolFeature) {
     throw new AppError(StatusCodes.NOT_FOUND, 'School feature not found.');
   }
 
-  return deletedSchoolFeature;
+  // If no index is provided, delete the entire SchoolFeatures document
+  if (featureIndex === undefined) {
+    const deletedSchoolFeature = await SchoolFeatures.findByIdAndDelete(id);
+
+    if (!deletedSchoolFeature) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'School feature not found.');
+    }
+
+    return deletedSchoolFeature;
+  }
+
+  // If an index is provided, ensure it's valid (i.e., it's within the bounds of the features array)
+  if (featureIndex < 0 || featureIndex >= schoolFeature.features.length) {
+    throw new AppError(StatusCodes.BAD_REQUEST, 'Invalid feature index.');
+  }
+
+  // Remove the feature at the given index
+  schoolFeature.features.splice(featureIndex, 1);
+
+  // Save the updated document
+  await schoolFeature.save();
+
+  return schoolFeature;
 };
+
+
 
 export const SchoolFeatureServices = {
   createSchoolFeatureIntoDB,

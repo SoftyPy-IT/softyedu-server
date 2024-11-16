@@ -18,6 +18,8 @@ const achievementValidationSchema = z.object({
     description: z
       .string({ required_error: 'Description is required' })
       .min(1, { message: 'Title is required' }),
+    folder_name: z
+      .string({ required_error: 'Folder name is required' })
   }),
 });
 const updateAchievementValidationSchema = z.object({
@@ -39,6 +41,8 @@ const updateAchievementValidationSchema = z.object({
       .string({ required_error: 'Description is required' })
       .min(1, { message: 'Title is required' })
       .optional(),
+      folder_name: z
+      .string({ required_error: 'Folder name is required' }).optional()
   }),
 });
 

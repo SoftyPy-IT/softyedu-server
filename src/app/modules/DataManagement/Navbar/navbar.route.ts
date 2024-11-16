@@ -1,7 +1,9 @@
 import express from 'express';
-import { validateRequest } from '../../../../utils/validateRequest';
+
 import { navbarValidation } from './navbar.validation';
 import { navbarController } from './navbar.controller';
+import { validateRequest } from '../../../../utils/validateRequest';
+ 
 
 const router = express.Router();
 
@@ -18,9 +20,9 @@ router.route('/:id').put(
   // authorization(USER_ROLE.super_admin),
   validateRequest(navbarValidation.navbarValidationSchema),
   navbarController.updateNavbar,
-);
+).delete(navbarController.deleteCategory);
 
-router.route('/:id/:subCategory').put(
+router.route('/:id/:index').put(
   // authorization(USER_ROLE.super_admin),
   navbarController.deleteSubCategory,
 );

@@ -1,11 +1,21 @@
 import { z } from 'zod';
 
+
+const SubCategorySchema = z.object({
+    category: z.string(),
+    href: z.string().regex(/[a-zA-Z0-9_-]+$/, "href must start with and follow the pattern")
+  })
+
 export const navbarValidationSchema = z.object({
   body: z.object({
     category: z.string({ required_error: 'Category name is required' }),
-    sub_category: z
-      .array(z.string({ required_error: 'Sub category name is required' }))
-      .min(1, 'At least one sub-category is required'),
+    href: z.string().regex(/[a-zA-Z0-9_-]+$/, "href must start with and follow the pattern").optional(),
+    sub_category: z.array(SubCategorySchema).optional().refine(
+      (value) => !value || value.length > 0,
+      {
+        message: "If sub_category is provided, it cannot be empty."
+      }
+    )
   }),
 });
 
