@@ -11,6 +11,7 @@ import { SchoolFeatureRoutes } from '../modules/DataManagement/School-Features/s
 import { ExplorePointRoutes } from '../modules/DataManagement/Explore-point/explore-point.route';
 import { FolderRoutes } from '../modules/DataManagement/Stock-gallery/Create-folder/folder.route';
 import { FacilitiesRoutes } from '../modules/DataManagement/Facilities/facilities.route';
+import { PhotoGalleryRoutes } from '../modules/DataManagement/Photo-gallery/photo-gallery.route';
 
 const router = Router();
 
@@ -62,6 +63,10 @@ const moduleRoutes = [
   {
     path: '/facilities',
     route: FacilitiesRoutes,
+  },
+  {
+    path: '/photo-gallery',
+    route: PhotoGalleryRoutes,
   },
 ];
 
