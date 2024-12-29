@@ -5,14 +5,16 @@ import { Navbar } from './navbar.model';
 import { AppError } from '../../../error/AppError';
 
 
-
 const createNavbarIntoDB = async (payload: TNavbar) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    if (!Array.isArray(payload.sub_category)) {
-      payload.sub_category = [payload.sub_category];
+    if (!Array.isArray(payload.sub_category) || payload.sub_category.length === 0) {
+      throw new AppError(
+        StatusCodes.BAD_REQUEST,
+        'Please add category link',
+      );
     }
 
     const existingCategory = await Navbar.findOne({
@@ -47,38 +49,15 @@ const getAllNavbarFromDB = async () => {
 
   return navbar;
 };
+const getSingleNavbarFromDB = async (id: string) => {
+  const navbar = await Navbar.findById(id);
 
-
-
-const deleteSubCategoryFromDB = async (id: string, subCategoryIndex: number) => {
-  // Find the Navbar document by ID
-  const existingCategory = await Navbar.findById(id);
-  if (!existingCategory) {
-    throw new AppError(StatusCodes.NOT_FOUND, 'Category not found.');
+  if (!navbar) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'No data found');
   }
 
-  // Check if the provided index is within bounds
-  if (subCategoryIndex < 0 || subCategoryIndex >= existingCategory.sub_category.length) {
-    throw new AppError(StatusCodes.BAD_REQUEST, 'Invalid sub-category index.');
-  }
-
-  // Remove the sub-category at the specified index
-  existingCategory.sub_category.splice(subCategoryIndex, 1);
-
-  // Save the updated document
-  const updatedNavBar = await existingCategory.save();
-  return updatedNavBar;
+  return navbar;
 };
-const deleteCategoryFromDB = async (id: string) => {
-  // Find the Navbar document by ID
-  const category = await Navbar.findByIdAndDelete(id);
-  if (!category) {
-    throw new AppError(StatusCodes.NOT_FOUND, 'Category not found.');
-  }
-  return category;
-};
-
-
 
 const updateNavbarInDB = async (id: string, payload: Partial<TNavbar>) => {
   const session = await mongoose.startSession();
@@ -86,8 +65,11 @@ const updateNavbarInDB = async (id: string, payload: Partial<TNavbar>) => {
 
   try {
     // Ensure sub_category is an array
-    if (payload.sub_category && !Array.isArray(payload.sub_category)) {
-      payload.sub_category = [payload.sub_category];
+    if (!Array.isArray(payload.sub_category) || payload.sub_category.length === 0) {
+      throw new AppError(
+        StatusCodes.BAD_REQUEST,
+        'Please add category link',
+      );
     }
 
     // Find the existing Navbar document by ID
@@ -122,12 +104,61 @@ const updateNavbarInDB = async (id: string, payload: Partial<TNavbar>) => {
     session.endSession();
   }
 };
+const updateNavbarShowInClientInDB = async (id: string) => {
+ 
+  const navbar = await Navbar.findById(id);
+  if (!navbar) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'No data found');
+  }
+  // Update the isShown field
+  navbar.isShown = !navbar.isShown;
+  // Save the updated navbar back to the database
+  await navbar.save();
+
+  return navbar;
+};
+
+
+const deleteSubCategoryFromDB = async (id: string, subCategoryIndex: number) => {
+  // Find the Navbar document by ID
+  const existingCategory = await Navbar.findById(id);
+  if (!existingCategory) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Category not found.');
+  }
+
+  // Check if the provided index is within bounds
+  if (subCategoryIndex < 0 || subCategoryIndex >= existingCategory.sub_category.length) {
+    throw new AppError(StatusCodes.BAD_REQUEST, 'Invalid sub-category index.');
+  }
+
+  // Remove the sub-category at the specified index
+  existingCategory.sub_category.splice(subCategoryIndex, 1);
+
+  // Save the updated document
+  const updatedNavBar = await existingCategory.save();
+  return updatedNavBar;
+};
+
+const deleteCategoryFromDB = async (id: string) => {
+  // Find the Navbar document by ID
+  const category = await Navbar.findByIdAndDelete(id);
+  if (!category) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Category not found.');
+  }
+  return category;
+};
+
+
+
+
 
 
 export const NavbarServices = {
   createNavbarIntoDB,
   getAllNavbarFromDB,
+  getSingleNavbarFromDB,
   deleteSubCategoryFromDB,
   updateNavbarInDB,
+  updateNavbarShowInClientInDB,
   deleteCategoryFromDB
 };

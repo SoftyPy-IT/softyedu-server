@@ -7,4 +7,5 @@ export type TNavbar = {
   category: string;
   href: string
   sub_category: TSubCategory[];
+  isShown: boolean
 };
