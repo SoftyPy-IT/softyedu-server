@@ -28,6 +28,18 @@ const getAllSchoolFeatures = catchAsync(async (req, res) => {
   });
 });
 
+const getSingleSchoolFeature = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await SchoolFeatureServices.getSingleSchoolFeaturesFromDB(id);
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'School feature retrieved successful!',
+    data: result,
+  });
+});
+
 const updateSchoolFeature = catchAsync(async (req, res) => {
   const { id } = req.params;
 
@@ -62,6 +74,7 @@ const deleteSchoolFeature = catchAsync(async (req, res) => {
 export const schoolFeatureController = {
   createSchoolFeature,
   getAllSchoolFeatures,
+  getSingleSchoolFeature,
   updateSchoolFeature,
   deleteSchoolFeature,
 };

@@ -16,6 +16,7 @@ router
 
 router
   .route('/:id')
+  .get(bannerController.getSingleBanner)
   .put(
     // authorization(USER_ROLE.super_admin),
     validateRequest(bannerValidation.updateBannerValidationSchema),

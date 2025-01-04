@@ -40,6 +40,17 @@ const getAllSchoolFeatureFromDB = async (query: Record<string, unknown>) => {
   };
 };
 
+
+const getSingleSchoolFeaturesFromDB = async (id: string) => {
+  const feature = await SchoolFeatures.findById(id);
+
+  if (!feature) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'No data found');
+  }
+
+  return feature;
+};
+
 const updateSchoolFeatureInDB = async (
   id: string,
   payload: TSchoolFeatures,
@@ -114,6 +125,7 @@ const deleteSchoolFeatureFromDB = async (id: string, featureIndex?: number) => {
 export const SchoolFeatureServices = {
   createSchoolFeatureIntoDB,
   getAllSchoolFeatureFromDB,
+  getSingleSchoolFeaturesFromDB,
   updateSchoolFeatureInDB,
   deleteSchoolFeatureFromDB,
 };

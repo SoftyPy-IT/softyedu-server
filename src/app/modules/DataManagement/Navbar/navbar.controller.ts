@@ -13,8 +13,30 @@ const createNavbar = catchAsync(async (req, res) => {
     data: navbar,
   });
 });
-const getNavbar = catchAsync(async (req, res) => {
+const getAllNavbar = catchAsync(async (req, res) => {
   const navbar = await NavbarServices.getAllNavbarFromDB();
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Navbar retrieved successful!',
+    data: navbar,
+  });
+});
+const getAllClientNavbar = catchAsync(async (req, res) => {
+  const navbar = await NavbarServices.getAllClientNavbarFromDB();
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Navbar retrieved successful!',
+    data: navbar,
+  });
+});
+
+
+const getSingleNavbar = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const navbar = await NavbarServices.getSingleNavbarFromDB(id);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
@@ -35,6 +57,20 @@ const updateNavbar = catchAsync(async (req, res) => {
     data: navbar,
   });
 });
+const updateNavbarShown = catchAsync(async (req, res) => {
+  const { id} = req.params;
+
+  // Update the navbar
+  const navbar = await NavbarServices.updateNavbarShowInClientInDB(id);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Navbar status updated successfully!',
+    data: navbar,
+  });
+});
+
 const deleteSubCategory = catchAsync(async (req, res) => {
   const { id, index } = req.params;
 
@@ -60,9 +96,12 @@ const deleteCategory = catchAsync(async (req, res) => {
 
 export const navbarController = {
   createNavbar,
-  getNavbar,
+  getAllNavbar,
+  getAllClientNavbar,
+  getSingleNavbar,
   updateNavbar,
+  updateNavbarShown,
   deleteSubCategory,
   deleteCategory
-  
+
 };

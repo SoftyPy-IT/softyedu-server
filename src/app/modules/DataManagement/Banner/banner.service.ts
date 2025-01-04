@@ -4,8 +4,6 @@ import sanitizePayload from '../../../middlewares/updateData';
 import { TBanner } from './banner.interface';
 import { Banner } from './banner.model';
 import QueryBuilder from '../../../builder/QueryBuilder';
-import { Folder } from '../Stock-gallery/Create-folder/folder.model';
-import mongoose from 'mongoose';
 import { addImageToFolder } from '../../../middlewares/image-upload-folder';
 
 const createBannerIntoDB = async (payload: TBanner) => {
@@ -13,7 +11,6 @@ const createBannerIntoDB = async (payload: TBanner) => {
   // Check for existing banner
   const existingBanner = await Banner.findOne(
     {
-      image: payload.image,
       title: payload.title,
       description: payload.description,
     }
@@ -22,7 +19,7 @@ const createBannerIntoDB = async (payload: TBanner) => {
   if (existingBanner) {
     throw new AppError(
       StatusCodes.CONFLICT,
-      'A banner with the same image, title, or description already exists.'
+      'A banner with the same title, or description already exists.'
     );
   }
 
@@ -45,36 +42,15 @@ const getAllBannerFromDB = async (query: Record<string, unknown>) => {
   };
 };
 
-// const updateBannerInDB = async (id: string, payload: TBanner) => {
-//   const existingBanner = await Banner.findOne({
-//     $and: [
-//       { image: payload.image },
-//       { title: payload.title },
-//       { description: payload.description },
-//     ],
-//     _id: { $ne: id },
-//   });
+const getSingleBannerFromDB = async (id: string) => {
+  const banner = await Banner.findById(id);
 
-//   if (existingBanner) {
-//     throw new AppError(
-//       StatusCodes.CONFLICT,
-//       'A banner with the same image, title, or description already exists.',
-//     );
-//   }
+  if (!banner) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'No data found');
+  }
 
-//   const sanitizeData = sanitizePayload(payload);
-
-//   const updatedBanner = await Banner.findByIdAndUpdate(id, sanitizeData, {
-//     new: true,
-//     runValidators: true,
-//   });
-
-//   if (!updatedBanner) {
-//     throw new AppError(StatusCodes.NOT_FOUND, 'Banner not found.');
-//   }
-
-//   return updatedBanner;
-// };
+  return banner;
+};
 
 
 const updateBannerInDB = async (id: string, payload: TBanner) => {
@@ -82,7 +58,6 @@ const updateBannerInDB = async (id: string, payload: TBanner) => {
   // Check for existing banner with the same details (excluding the current banner)
   const existingBanner = await Banner.findOne(
     {
-      image: payload.image,
       title: payload.title,
       description: payload.description,
       _id: { $ne: id },
@@ -93,7 +68,7 @@ const updateBannerInDB = async (id: string, payload: TBanner) => {
   if (existingBanner) {
     throw new AppError(
       StatusCodes.CONFLICT,
-      'A banner with the same image, title, or description already exists.'
+      'A banner with the same title, or description already exists.'
     );
   }
 
@@ -128,6 +103,7 @@ const deleteBannerFromDB = async (id: string) => {
 export const BannerServices = {
   createBannerIntoDB,
   getAllBannerFromDB,
+  getSingleBannerFromDB,
   updateBannerInDB,
   deleteBannerFromDB,
 };

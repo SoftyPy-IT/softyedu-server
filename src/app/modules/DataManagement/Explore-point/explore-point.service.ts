@@ -31,6 +31,16 @@ const getAllExplorePointFromDB = async (query: Record<string, unknown>) => {
   };
 };
 
+const getSingleExplorePointFromDB = async (id: string) => {
+  const point = await ExplorePoint.findById(id);
+
+  if (!point) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'No data found');
+  }
+
+  return point;
+};
+
 const updateExplorePointInDB = async (id: string, payload: TExplorePoint) => {
   const sanitizeData = sanitizePayload(payload);
 
@@ -66,6 +76,7 @@ const deleteExplorePointFromDB = async (id: string) => {
 export const ExplorePointServices = {
   createExplorePointIntoDB,
   getAllExplorePointFromDB,
+  getSingleExplorePointFromDB,
   updateExplorePointInDB,
   deleteExplorePointFromDB,
 };
