@@ -24,6 +24,17 @@ const getAllExplorePoints = catchAsync(async (req, res) => {
   });
 });
 
+const getSingleExplorePoint = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await ExplorePointServices.getSingleExplorePointFromDB(id);
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Explore point retrieved successful!',
+    data: result,
+  });
+});
 const updateExplorePoint = catchAsync(async (req, res) => {
   const { id } = req.params;
 
@@ -53,6 +64,7 @@ const deleteExplorePoint = catchAsync(async (req, res) => {
 export const explorePointController = {
   createExplorePoint,
   getAllExplorePoints,
+  getSingleExplorePoint,
   updateExplorePoint,
   deleteExplorePoint,
 };

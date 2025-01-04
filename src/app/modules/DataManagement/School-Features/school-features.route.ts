@@ -16,6 +16,7 @@ router
 
 router
   .route('/:id')
+  .get(schoolFeatureController.getSingleSchoolFeature)
   .put(
     // authorization(USER_ROLE.super_admin),
     validateRequest(

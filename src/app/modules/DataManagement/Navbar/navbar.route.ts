@@ -13,7 +13,11 @@ router
     validateRequest(navbarValidation.navbarValidationSchema),
     navbarController.createNavbar,
   )
-  .get(navbarController.getNavbar);
+  .get(navbarController.getAllNavbar);
+  
+router
+  .route('/client')
+  .get(navbarController.getAllClientNavbar);
 
 router.route('/:id')
   .get(navbarController.getSingleNavbar)

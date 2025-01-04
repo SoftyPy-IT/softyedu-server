@@ -49,6 +49,16 @@ const getAllNavbarFromDB = async () => {
 
   return navbar;
 };
+const getAllClientNavbarFromDB = async () => {
+  const navbar = await Navbar.find({ isShown: true }).sort({ createdAt: -1 });
+
+  if (navbar.length === 0) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'No data found');
+  }
+
+  return navbar;
+};
+
 const getSingleNavbarFromDB = async (id: string) => {
   const navbar = await Navbar.findById(id);
 
@@ -150,12 +160,10 @@ const deleteCategoryFromDB = async (id: string) => {
 
 
 
-
-
-
 export const NavbarServices = {
   createNavbarIntoDB,
   getAllNavbarFromDB,
+  getAllClientNavbarFromDB,
   getSingleNavbarFromDB,
   deleteSubCategoryFromDB,
   updateNavbarInDB,

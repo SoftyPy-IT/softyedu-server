@@ -16,6 +16,7 @@ router
 
 router
   .route('/:id')
+  .get(explorePointController.getSingleExplorePoint)
   .put(
     // authorization(USER_ROLE.super_admin),
     validateRequest(explorePointValidation.updateExplorePointValidationSchema),
